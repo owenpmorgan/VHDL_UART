@@ -1,0 +1,1 @@
+--incr --debug "typical" --relax --mt "2" -L "xil_defaultlib" -L "secureip" --snapshot "UART_rx_behav" "xil_defaultlib.UART_rx" -log "elaborate.log" 

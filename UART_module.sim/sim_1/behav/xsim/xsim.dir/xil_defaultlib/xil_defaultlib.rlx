@@ -1,0 +1,9 @@
+0.7
+2020.2
+Nov 14 2025
+19:37:27
+C:/Users/User/Desktop/VHDL_git/UART_module/UART_module.srcs/sim_1/new/UART_baud_clock_tb.vhd,1776433515,vhdl,,,,uart_baud_clock_tb,,,,,,,,
+C:/Users/User/Desktop/VHDL_git/UART_module/UART_module.srcs/sources_1/new/UART_baud.vhd,1776432311,vhdl,C:/Users/User/Desktop/VHDL_git/UART_module/UART_module.srcs/sim_1/new/UART_baud_clock_tb.vhd,,,uart_baud_clock,,,,,,,,
+C:/Users/User/Desktop/VHDL_git/UART_module/UART_module.srcs/sources_1/new/UART_baud_clock_simple_variable.vhd,1776434682,vhdl,C:/Users/User/Desktop/VHDL_git/UART_module/UART_module.srcs/sim_1/new/UART_baud_clock_tb.vhd,,,uart_baud_clock_simple_variable,,,,,,,,
+C:/Users/User/Desktop/VHDL_git/UART_module/UART_module.srcs/sources_1/new/UART_baud_simple.vhd,1776430740,vhdl,C:/Users/User/Desktop/VHDL_git/UART_module/UART_module.srcs/sim_1/new/UART_baud_clock_tb.vhd,,,uart_baud_clock_simple,,,,,,,,
+C:/Users/User/Desktop/VHDL_git/UART_module/UART_module.srcs/sources_1/new/UART_rx.vhd,1776206860,vhdl,,,,uart_rx,,,,,,,,

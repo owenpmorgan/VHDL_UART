@@ -31,8 +31,21 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
+
 entity UART_tx is
---  Port ( );
+  Generic(
+    D_BIT           : integer := 8; -- # Data Bits
+    SB_TICK         : integer := 16 -- # Stop ticks
+  );
+  Port (
+    tx_pulse        : in std_logic; -- 
+    reset           : in std_logic;
+    
+    tx              : out std_logic; -- the physical output
+ 
+    TX_DONE_TICK    : out std_logic;
+    d_in            : in std_logic_vector (7 downto 0) -- The paralel data in
+   );
 end UART_tx;
 
 architecture Behavioral of UART_tx is

@@ -1,0 +1,7 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../UART_module.srcs/sources_1/new/UART_baud_clock_simple_variable.vhd" \
+"../../../../UART_module.srcs/sim_1/new/UART_baud_clock_tb.vhd" \
+
+# Do not sort compile order
+nosort

@@ -16,11 +16,11 @@ use IEEE.NUMERIC_STD.ALL;
 -- Log2(307200) = 19 bits needed
 
 
-entity UART_baud_clock is 
+entity UART_baud_clock_simple is 
     generic(
         N               : integer := 9; -- bits needed...
-        M               : integer := 326; -- ... to count to this to give us the faster 16x baud rate
-        )
+        M               : integer := 326 -- ... to count to this to give us the faster 16x baud rate
+        );
     port(
     CLK100MHZ           : in std_logic;
     reset               : in std_logic;
@@ -28,13 +28,13 @@ entity UART_baud_clock is
     tx_pulse            : out std_logic; -- a pulse at baud rate, 19200
     rx_pulse            : out std_logic -- A pulse at 16x Baud rate 307200, S_TICK in UART_rx
     );
-end UART_baud_clock;
+end UART_baud_clock_simple;
 
-architecture arch of UART_baud_clock is
+architecture arch of UART_baud_clock_simple is
 
     -- this is the synchronous part
-    signal rx_counter        : integer range (0 to M-1) := 0; -- The register that will hold the count
-    signal tx_counter        : integer range (0 to 15) := 0; -- The register that holds the 16 times slower count, 0-15
+    signal rx_counter        : integer range 0 to M-1 := 0; -- The register that will hold the count
+    signal tx_counter        : integer range 0 to 15 := 0; -- The register that holds the 16 times slower count, 0-15
 
 begin
 
@@ -52,6 +52,7 @@ begin
             if rx_counter < M-1 then
                 rx_counter <= rx_counter + 1;
                 rx_pulse <= '0';
+                tx_pulse <= '0';
             else
                 rx_counter <= 0;
                 rx_pulse <= '1';

@@ -39,11 +39,11 @@ entity UART_rx is
     SB_TICK         : integer := 16 -- # Stop ticks
   );
   Port (
-    CLK100MHZ       : in std_logic; -- clocks need to be worked out here, good to have the 100MHZ updates but where do the ticks come from?
+    rx_pulse        : in std_logic; -- 
     reset           : in std_logic;
     
-    rx              : in std_logic; -- the start bit saying 'about to receive', then the rest of the message in. 0 to start
-    S_TICK          : in std_logic; -- sampling tick, runs 16x the baud rate
+    rx              : in std_logic; -- the physical input
+ 
     RX_DONE_TICK    : out std_logic;
     d_out           : out std_logic_vector (7 downto 0) -- The parallel data out
    );
@@ -61,14 +61,14 @@ architecture arch of UART_rx is
 begin
 
     -- state and data registers
-    process(CLK100MHZ, reset)
+    process(rx_pulse, reset)
     begin
         if reset = '1' then
             state_reg <= idle;
             s_reg <= (others => '0');
             n_reg <= (others => '0');
             b_reg <= (others => '0');
-        elsif (CLK100MHZ'event and CLK100MHZ = '1') then
+        elsif rising_edge(rx_pulse) then
             state_reg <= state_next;
             s_reg <= s_next; -- s_next is assigned an incremented s_reg below, this will be asigned to s_reg on the next system clock tick
             n_reg <= n_next;
@@ -76,7 +76,7 @@ begin
         end if;
     end process;
     
-    process(state_reg, s_reg, n_reg, b_reg, s_tick, rx)
+    process(state_reg, s_reg, n_reg, b_reg, rx_pulse, rx)
     begin      
         state_next <= state_reg; -- perpetuate staying the same if nothing happens, state_next become state_reg on next clock cycle in above process
         s_next <= s_reg;
@@ -93,7 +93,7 @@ begin
                 end if;
             
             when start =>
-                if (s_tick = '1') then -- s tick is the 16x baud sample tick, when it is 1, it has incremented by one
+                if (rx_pulse = '1') then -- s tick is the 16x baud sample tick, when it is 1, it has incremented by one
                     if (s_reg = 7) then -- if the reg holding number of s ticks has reached 7, thats the halfway point in a sample at the baud rate
                         state_next <= data;
                         s_next <= (others => '0'); -- reset sampling ticks
@@ -104,7 +104,7 @@ begin
                  end if;
                  
              when data =>
-                if (s_tick = '1') then 
+                if (rx_pulse = '1') then 
                     if (s_reg = 15) then 
                         s_next <= (others => '0');
                         b_next <= rx & b_reg(7 downto 1); -- this will pop off the LSB of b_reg and add the current rx to the MSB, after 8 we will get our 8 bits data
@@ -119,7 +119,7 @@ begin
                 end if;
 
             when stop =>
-                if (s_tick = '1') then
+                if (rx_pulse = '1') then
                     if (s_reg = (SB_TICK -1)) then
                         state_next <= idle;
                         RX_DONE_TICK <= '1';
